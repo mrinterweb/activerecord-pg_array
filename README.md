@@ -70,7 +70,7 @@ remove_pack_name!('Bolton')
 
 ## Roadmap
 
-* TESTS! Yes I plan on writing tests for this. This gem was pulled out of a rails project and that is where my tests for this are right now. When I have an opportunity, I will add tests.
+* Finish writing all specs
 * Actual atomic operations :)
 * Perhaps add some handy query interface stuff or at least document how query arrays with ActiveRecord.
 * rdoc documentation
