@@ -45,11 +45,11 @@ end
 The following methods are automatically defined for "friend_ids":
 
 ```ruby
-add_wolf(1)                # wolf_ids is appended to
+add_wolf(wolfy)            # ActiveRecord object wolfy's id is appended to wolf_ids
 add_pack_name('Stark')
-add_wolf!(2)               # wolf_ids appended with atomic update
+add_wolf!(son_of_wolfy)    # wolf_ids appended with atomic update
 add_pack_name!('Karstark')
-add_wolves([3,4])          # add multiple to wolf_ids. Note: irregular plural method name
+add_wolves([wolfy_jr, 4])  # add multiple to wolf_ids. Note: irregular plural method name and mixed input
 add_pack_names(['Greyjoy', 'Bolton'])
 remove_wolf(2)             # wolf_ids is modified but not saved
 remove_pack_name('Greyjoy')
@@ -62,6 +62,7 @@ remove_pack_name!('Bolton')
 * TESTS! Yes I plan on writing tests for this. This gem was pulled out of a rails project and that is where my tests for this are right now. When I have an opportunity, I will add tests.
 * Actual atomic operations :)
 * Perhaps add some handy query interface stuff or at least document how query arrays with ActiveRecord.
+* rdoc documentation
 
 ## Contributing
 
