@@ -16,6 +16,8 @@ module ActiveRecord
 
           obj_convert = ->(obj) do
             if array_column_name =~ ids_regex && obj.kind_of?(ActiveRecord::Base)
+              # todo - check to make sure that array_column_name is an attribute
+              # todo - also, I don't know if array_column name is so hot. Maybe just attr_name
               obj = obj.id
             end
             obj
