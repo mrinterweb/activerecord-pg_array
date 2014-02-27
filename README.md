@@ -42,7 +42,7 @@ class WolfTracker < ActiveRecord::Base
 end
 ```
 
-The following methods are automatically defined for "friend_ids":
+The following methods are automatically defined for "wolf_ids":
 
 ```ruby
 add_wolf(wolfy)            # ActiveRecord object wolfy's id is appended to wolf_ids
@@ -72,9 +72,6 @@ remove_pack_name!('Bolton')
 
 ## Roadmap
 
-* Finish writing all specs
-* Actual atomic operations :)
-* Perhaps add some handy query interface stuff or at least document how query arrays with ActiveRecord.
 * rdoc documentation
 
 ## Contributing
