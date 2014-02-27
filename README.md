@@ -2,7 +2,7 @@
 
 This gem defines methods in your models for ActiveRecord attributes that use Postgres's arrays.
 
-I wrote this gem because I realized that working with Postgresql arrays was not as straight-forward as I had hoped.
+I wrote this gem because I realized that working with Postgresql arrays was not as straight-forward as I had hoped. Currently, this gem only helps with persistence and does not provide a query interface.
 
 ## Installation
 
@@ -61,6 +61,7 @@ remove_pack_name!('Bolton')
 
 * TESTS! Yes I plan on writing tests for this. This gem was pulled out of a rails project and that is where my tests for this are right now. When I have an opportunity, I will add tests.
 * Actual atomic operations :)
+* Perhaps add some handy query interface stuff or at least document how query arrays with ActiveRecord.
 
 ## Contributing
 
