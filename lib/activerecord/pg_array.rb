@@ -15,8 +15,8 @@ module ActiveRecord
           friendly_attr_plural = segs.join('_')
 
           obj_convert = ->(obj) do
-            if attr_name =~ ids_regex && obj.kind_of?(ActiveRecord::Base)
-              # todo - check to make sure that attr_name is an integer array
+            if attr_name =~ ids_regex && obj.kind_of?(ActiveRecord::Base) and
+               self.column_types[attr_name].type == :integer
               obj = obj.id
             end
             obj
@@ -38,8 +38,14 @@ module ActiveRecord
 
           define_method :"add_#{friendly_attr_singular}!" do |obj|
             obj = obj_convert[obj]
-            atr_will_change[self]
-            self.update_attribute attr_name.to_sym, atr[self].push(obj).uniq
+            atr_will_change[self] # seems strange that calling this is needed
+            
+            # There are two external issues that block atomic updates to one attribute.
+            # 1. ActiveRecord update_attribute actually updates all attributes that are dirty! This surprised me.
+            # 2. update_column doesn't work on pg arrays for rails < 4.0.4 (which is not yet released)
+            #    https://github.com/rails/rails/issues/12261
+            atr[self].push(obj).uniq!
+            self.update_attribute attr_name.to_sym, atr[self]
           end
 
           define_method :"add_#{friendly_attr_plural}" do |objs|
@@ -51,7 +57,7 @@ module ActiveRecord
           define_method :"remove_#{friendly_attr_singular}" do |obj|
             obj = obj_convert.call(obj)
             if atr[self].include?(obj)
-              atr[self].remove(obj)
+              atr[self].delete(obj)
               atr_will_change[self]
             end
           end
@@ -59,6 +65,26 @@ module ActiveRecord
           define_method :"remove_#{friendly_attr_singular}!" do |obj|
             self.send :"remove_#{friendly_attr_singular}", obj
             self.save!
+          end
+
+          
+          # define basic relational lookup methods
+          # example:
+          #   Given wolf_ids is the attribute
+          #   Then it will try to define method wolves that retrieves wolf objects
+          if attr_name =~ ids_regex
+            if defined?(friendly_attr_singular.camelize.to_sym) and
+               self.column_types[attr_name].type == :integer
+              begin
+                klass = friendly_attr_singular.camelize.constantize
+
+                # it might be better to define a scope instead
+                define_method friendly_attr_plural.to_sym do
+                  klass.where(id: [atr[self]])
+                end
+              rescue NameError
+              end
+            end
           end
 
         end

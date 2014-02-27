@@ -2,7 +2,7 @@
 
 This gem defines methods in your models for ActiveRecord attributes that use Postgresql's arrays.
 
-I wrote this gem because I realized that working with Postgresql arrays was not as straight-forward as I had hoped. Currently, this gem only helps with persistence and does not provide a query interface.
+I wrote this gem because I realized that working with Postgresql arrays was not as straight-forward as I had hoped. 
 
 ## Installation
 
@@ -50,6 +50,7 @@ add_wolf!(son_of_wolfy)    # wolf_ids appended with atomic update
 add_wolves([wolfia, 4])    # add multiple to wolf_ids. Note: irregular plural method name and mixed input
 remove_wolf(wolfia)        # wolf_ids is modified but not saved
 remove_wolf!(3)            # wolf_ids atomic removal
+wolves                     # looks up wolf objects with ids wolf_ids
 ```
 
 The same is true for pack_names:
@@ -60,6 +61,7 @@ add_pack_name!('Karstark')
 add_pack_names(['Greyjoy', 'Bolton'])
 remove_pack_name('Greyjoy')
 remove_pack_name!('Bolton')
+# does not define a finder method based on pack_names
 ```
 
 ## Dynamically created method rules

@@ -20,8 +20,13 @@ ActiveRecord::Schema.define(version: 20140227091226) do
     t.string  "name"
     t.integer "wolf_ids",   default: [], array: true
     t.string  "pack_names", default: [], array: true
+    t.string  "chicken_ids",  default: [], array: true # this is intentionally an array of strings
   end
 
   add_index "wolf_trackers", ["wolf_ids"], name: "index_wolf_trackers_on_wolf_ids", using: :gin
+
+  create_table "wolves", force: true do |t|
+    t.string "name"
+  end
 
 end
