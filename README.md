@@ -1,4 +1,4 @@
-# Activerecord::PgArray
+# Activerecord::PGArray
 
 This gem defines methods in your models for ActiveRecord attributes that use Postgres's arrays.
 
@@ -8,45 +8,59 @@ I wrote this gem because I realized that working with Postgresql arrays was not 
 
 Add this line to your application's Gemfile:
 
-    gem 'activerecord-pg_array'
+```ruby
+gem 'activerecord-pg_array'
+```
 
 ## Usage
 
 Then in your classes that inherit from ActiveRecord `include ActiveRecord::PGArray`
 
-### Example:
+### Silly Example:
 
 Given the following migration:
 
-    class CreateMyModel < ActiveRecord::Migration
-      def change
-        create_table :my_models do |t|
-          t.string :name
-          t.integer :friend_ids, array: true, default: []
-        end
-    
-        add_index :my_models, :friend_ids, using: 'gin'
-      end
+```ruby
+class CreateWoldTracker < ActiveRecord::Migration
+  def change
+    create_table :wolf_trackers do |t|
+      t.string :name
+      t.integer :wolf_ids, array: true, default: []
+      t.string :pack_names, array: true, default: []
     end
+
+    add_index :wolf_trackers, :wolf_ids, using: 'gin'
+  end
+end
+```
 
 And class:
 
-    class MyClass < ActiveRecord::Base
-      include ActiveRecord::PGArray
-    end
+```ruby
+class WolfTracker < ActiveRecord::Base
+  include ActiveRecord::PGArray
+end
+```
 
 The following methods are automatically defined for "friend_ids":
 
-* add_friend(object)
-* add_friend!(object)
-* add_friends(objects)
-* remove_friend(object)
-* remove_friend!(object)
+```ruby
+add_wolf(1)                # wolf_ids is appended to
+add_pack_name('Stark')
+add_wolf!(2)               # wolf_ids appended with atomic update
+add_pack_name!('Karstark')
+add_wolves([3,4])          # add multiple to wolf_ids. Note: irregular plural method name
+add_pack_names(['Greyjoy', 'Bolton'])
+remove_wolf(2)             # wolf_ids is modified but not saved
+remove_pack_name('Greyjoy')
+remove_wolf!(3)            # wolf_ids atomic removal
+remove_pack_name!('Bolton')
+```
 
 ## Roadmap
 
 * TESTS! Yes I plan on writing tests for this. This gem was pulled out of a rails project and that is where my tests for this are right now. When I have an opportunity, I will add tests.
-* Atomic operations
+* Actual atomic operations :)
 
 ## Contributing
 
