@@ -21,7 +21,7 @@ Then in your classes that inherit from ActiveRecord `include ActiveRecord::PGArr
 Given the following migration:
 
 ```ruby
-class CreateWoldTracker < ActiveRecord::Migration
+class CreateWolfTracker < ActiveRecord::Migration
   def change
     create_table :wolf_trackers do |t|
       t.string :name
