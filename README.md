@@ -48,8 +48,12 @@ The following methods are automatically defined for "wolf_ids":
 add_wolf(wolfy)            # ActiveRecord object wolfy's id is appended to wolf_ids
 add_wolf!(son_of_wolfy)    # wolf_ids appended with atomic update
 add_wolves([wolfia, 4])    # add multiple to wolf_ids. Note: irregular plural method name and mixed input
+add_wolves!([wolfia, 4])    # add multiple to wolf_ids and persists. Note: irregular plural method name and mixed input. Can take multiple arguments or an array.
+add_wolves!(wolfia, son_of_wolfy) # add multiple and persist. Can take multiple arguments or an array
 remove_wolf(wolfia)        # wolf_ids is modified but not saved
 remove_wolf!(3)            # wolf_ids atomic removal
+remove_wolves(3, wolfia)   # wolf_ids has two items removed but is not persisted. Can take multiple arguments or an array
+remove_wolves!([3, wolfia])  # wolf_ids has two items removed and is persisted. Can take multiple arguments or an array
 wolves                     # looks up wolf objects with ids wolf_ids
 ```
 
