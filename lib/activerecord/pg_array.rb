@@ -48,10 +48,19 @@ module ActiveRecord
             self.update_attribute attr_name.to_sym, atr[self]
           end
 
-          define_method :"add_#{friendly_attr_plural}" do |objs|
+          define_method :"add_#{friendly_attr_plural}" do |*objs|
             objs.each do |obj|
-              self.send :"add_#{friendly_attr_singular}", obj
+              if obj.kind_of? Array
+                self.send :"add_#{friendly_attr_plural}", *obj
+              else
+                self.send :"add_#{friendly_attr_singular}", obj
+              end
             end
+          end
+
+          define_method :"add_#{friendly_attr_plural}!" do |*objs|
+            self.send :"add_#{friendly_attr_plural}", *objs
+            self.save!
           end
 
           define_method :"remove_#{friendly_attr_singular}" do |obj|
@@ -67,6 +76,20 @@ module ActiveRecord
             self.save!
           end
 
+          define_method :"remove_#{friendly_attr_plural}" do |*objs|
+            objs.each do |obj|
+              if obj.kind_of? Array
+                self.send :"remove_#{friendly_attr_plural}", *obj
+              else
+                self.send :"remove_#{friendly_attr_singular}", obj
+              end
+            end
+          end
+
+          define_method :"remove_#{friendly_attr_plural}!" do |*objs|
+            self.send :"remove_#{friendly_attr_plural}", *objs
+            self.save!
+          end
           
           # define basic relational lookup methods
           # example:

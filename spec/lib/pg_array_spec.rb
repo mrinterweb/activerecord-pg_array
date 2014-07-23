@@ -41,8 +41,11 @@ describe WolfTracker do
     it { should respond_to(:add_pack_name) }
     it { should respond_to(:add_pack_name!) }
     it { should respond_to(:add_pack_names) }
+    it { should respond_to(:add_pack_names!) }
     it { should respond_to(:remove_pack_name) }
     it { should respond_to(:remove_pack_name!) }
+    it { should respond_to(:remove_pack_names) }
+    it { should respond_to(:remove_pack_names!) }
   end
 
   context 'persistence' do
@@ -72,6 +75,18 @@ describe WolfTracker do
         pending "see note where add_<attr_name>! is defined. blocked by external issues"
         wolf_tracker.reload
         expect(wolf_tracker.name).to eq 'Wolfram'
+      end
+
+      it "should add multiple add_<atts>! with multiple arguments" do
+        wolf_tracker.add_pack_names!('red fang', 'midnight howlers')
+        wolf_tracker.reload
+        wolf_tracker.pack_names.length.should be 2
+      end
+
+      it "should add multiple add_<atts>! with an array argument" do
+        wolf_tracker.add_pack_names!(['red fang', 'midnight howlers'])
+        wolf_tracker.reload
+        wolf_tracker.pack_names.length.should be 2
       end
 
       it "should add with regular integer value" do
@@ -106,6 +121,31 @@ describe WolfTracker do
         wolf_tracker.remove_wolf!(wolfy.id)
         expect(wolf_tracker.reload.wolf_ids).to be_empty
       end
+
+      context "multiple" do
+        before  do
+          wolf_tracker.add_wolf!(son_of_wolfy)
+          expect(wolf_tracker.wolf_ids.length).to eq 2
+        end
+
+        it "should be called with an array argument" do
+          wolf_tracker.remove_wolves([wolfy, son_of_wolfy])
+          expect(wolf_tracker.wolf_ids.length).to eq 0
+          expect(wolf_tracker.reload.wolf_ids.length).to eq 2
+        end
+
+        it "should be called with multiple arguments" do
+          wolf_tracker.remove_wolves(wolfy, son_of_wolfy)
+          expect(wolf_tracker.wolf_ids.length).to eq 0
+          expect(wolf_tracker.reload.wolf_ids.length).to eq 2
+        end
+
+        it "should remove multiple and persist with !" do
+          wolf_tracker.remove_wolves!(wolfy, son_of_wolfy)
+          expect(wolf_tracker.reload.wolf_ids.length).to eq 0
+        end
+
+      end
     end # remove
 
     it 'should have more specs' do
@@ -116,7 +156,7 @@ describe WolfTracker do
 
   describe "finder methods" do
     before do
-      wolf_tracker.add_wolves([wolfy, son_of_wolfy]) 
+      wolf_tracker.add_wolves(wolfy, son_of_wolfy) 
       wolf_tracker.save!
     end
 
