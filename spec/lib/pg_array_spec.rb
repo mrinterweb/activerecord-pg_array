@@ -48,6 +48,11 @@ describe WolfTracker do
   context 'persistence' do
 
     context "add_<attr_name>" do
+      it "should contain the id in the <attr>_ids attribute" do
+        wolf_tracker.add_wolf(wolfy)
+        expect(wolf_tracker.wolf_ids).to eq [wolfy.id]
+      end
+
       it "should add_<attr>" do
         wolf_tracker.add_wolf(wolfy)
         wolf_tracker.save!

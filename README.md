@@ -1,6 +1,6 @@
 # ActiveRecord::PGArray
 
-This gem defines methods in your models for ActiveRecord attributes that use Postgresql's arrays.
+This gem defines methods in your models for ActiveRecord 4.0+ attributes that use Postgresql's arrays.
 
 I wrote this gem because I realized that working with Postgresql arrays was not as straight-forward as I had hoped. 
 
