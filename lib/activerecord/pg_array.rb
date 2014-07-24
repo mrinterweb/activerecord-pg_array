@@ -22,7 +22,7 @@ module ActiveRecord
           obj_convert = ->(obj) do
             custom_serializer = @@id_attr_map[attr_name.to_sym][obj.class.name.to_sym] rescue nil
 
-            if @@id_attr_map && custom_serializer
+            if custom_serializer
               obj = obj.send(custom_serializer)
             elsif attr_name =~ ids_regex && obj.kind_of?(ActiveRecord::Base) and
                   self.column_types[attr_name].type == :integer
