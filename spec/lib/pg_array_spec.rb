@@ -2,7 +2,9 @@ require 'spec_helper'
 require 'active_record'
 
 class Wolf < ActiveRecord::Base
+  # config_array_serializer names: :name
 end
+
 class Chicken < ActiveRecord::Base
 end
 
@@ -11,6 +13,7 @@ require 'pry'
 
 class WolfTracker < ActiveRecord::Base
   include ActiveRecord::PGArray
+  config_array_serializer pack_names: {:Wolf => :name}
 end
 
 describe WolfTracker do
@@ -56,6 +59,11 @@ describe WolfTracker do
         expect(wolf_tracker.wolf_ids).to eq [wolfy.id]
       end
 
+      it "should be able to add a non integer attribute type to an array" do
+        wolf_tracker.add_pack_name(wolfy)
+        expect(wolf_tracker.pack_names).to eq [wolfy.name]
+      end
+
       it "should add_<attr>" do
         wolf_tracker.add_wolf(wolfy)
         wolf_tracker.save!
@@ -87,6 +95,12 @@ describe WolfTracker do
         wolf_tracker.add_pack_names!(['red fang', 'midnight howlers'])
         wolf_tracker.reload
         wolf_tracker.pack_names.length.should be 2
+      end
+
+      it "should add multiple add_<atts>! with an array argument of class instances" do
+        wolf_tracker.add_pack_names!([wolfy, son_of_wolfy])
+        wolf_tracker.reload
+        expect(wolf_tracker.pack_names).to match_array [wolfy.name, son_of_wolfy.name]
       end
 
       it "should add with regular integer value" do

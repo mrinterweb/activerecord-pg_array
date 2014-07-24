@@ -5,6 +5,11 @@ module ActiveRecord
 
     def self.included(base)
       base.class_eval do
+
+        def self.config_array_serializer(hash)
+          @@id_attr_map = hash
+        end
+
         self.column_types.to_a.select { |c| c[1].instance_variable_get('@array') }.map(&:first).each do |attr_name|
           ids_regex = /_ids$/
           friendly_attr = attr_name.sub(ids_regex,'')
@@ -15,15 +20,21 @@ module ActiveRecord
           friendly_attr_plural = segs.join('_')
 
           obj_convert = ->(obj) do
-            if attr_name =~ ids_regex && obj.kind_of?(ActiveRecord::Base) and
-               self.column_types[attr_name].type == :integer
+            custom_serializer = @@id_attr_map[attr_name.to_sym][obj.class.name.to_sym] rescue nil
+
+            if @@id_attr_map && custom_serializer
+              obj = obj.send(custom_serializer)
+            elsif attr_name =~ ids_regex && obj.kind_of?(ActiveRecord::Base) and
+                  self.column_types[attr_name].type == :integer
               obj = obj.id
             end
             obj
           end
+
           atr = ->(slf) do
             slf.send attr_name.to_sym
           end
+
           atr_will_change = ->(slf) do
             slf.send(:"#{attr_name}_will_change!")
           end

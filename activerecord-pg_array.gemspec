@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 2.14"
   spec.add_development_dependency "pg", "~> 0.17"
   spec.add_development_dependency "pry", "~> 0.9"
+  spec.add_development_dependency "pry-nav"
   spec.add_development_dependency "guard", "~> 2.4"
   spec.add_development_dependency "guard-rspec", "~> 4.2"
 end
