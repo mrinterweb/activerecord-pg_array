@@ -71,7 +71,7 @@ tracker.remove_pack_name('Greyjoy')
 tracker.remove_pack_name!('Bolton')
 # Does not define a finder method based on pack_names.
 # If you define a custom array_serializer with config_array_serializer you can use this the same like:
-tracker.add_pack_names(wolf)
+tracker.add_pack_names([wolf])
 tracker.remove_pack_name!(wolf)
 ```
 
