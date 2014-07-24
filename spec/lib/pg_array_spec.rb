@@ -136,6 +136,13 @@ describe WolfTracker do
         expect(wolf_tracker.reload.wolf_ids).to be_empty
       end
 
+      it "should be able to remove pack_names" do
+        wolf_tracker.add_pack_name wolfy
+        expect(wolf_tracker.pack_names).to eq [wolfy.name]
+        wolf_tracker.remove_pack_name(wolfy)
+        expect(wolf_tracker.pack_names).to eq []
+      end
+
       context "multiple" do
         before  do
           wolf_tracker.add_wolf!(son_of_wolfy)

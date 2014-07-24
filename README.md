@@ -39,6 +39,10 @@ And class:
 ```ruby
 class WolfTracker < ActiveRecord::Base
   include ActiveRecord::PGArray
+  # if doing anything with the pack_names and passing Wold instances, Wolf#name
+  # will be the attribute used when serializing to pack_names
+  # Using config_array_serializer is optional.
+  config_array_serializer pack_names: {:Wolf => :name}
 end
 ```
 
