@@ -49,27 +49,30 @@ end
 The following methods are automatically defined for "wolf_ids":
 
 ```ruby
-add_wolf(wolfy)            # ActiveRecord object wolfy's id is appended to wolf_ids
-add_wolf!(son_of_wolfy)    # wolf_ids appended with atomic update
-add_wolves([wolfia, 4])    # add multiple to wolf_ids. Note: irregular plural method name and mixed input
-add_wolves!([wolfia, 4])    # add multiple to wolf_ids and persists. Note: irregular plural method name and mixed input. Can take multiple arguments or an array.
-add_wolves!(wolfia, son_of_wolfy) # add multiple and persist. Can take multiple arguments or an array
-remove_wolf(wolfia)        # wolf_ids is modified but not saved
-remove_wolf!(3)            # wolf_ids atomic removal
-remove_wolves(3, wolfia)   # wolf_ids has two items removed but is not persisted. Can take multiple arguments or an array
-remove_wolves!([3, wolfia])  # wolf_ids has two items removed and is persisted. Can take multiple arguments or an array
-wolves                     # looks up wolf objects with ids wolf_ids
+tracker.add_wolf(wolfy)            # ActiveRecord object wolfy's id is appended to wolf_ids
+tracker.add_wolf!(son_of_wolfy)    # wolf_ids appended with atomic update
+tracker.add_wolves([wolfia, 4])    # add multiple to wolf_ids. Note: irregular plural method name and mixed input
+tracker.add_wolves!([wolfia, 4])    # add multiple to wolf_ids and persists. Note: irregular plural method name and mixed input. Can take multiple arguments or an array.
+tracker.add_wolves!(wolfia, son_of_wolfy) # add multiple and persist. Can take multiple arguments or an array
+tracker.remove_wolf(wolfia)        # wolf_ids is modified but not saved
+tracker.remove_wolf!(3)            # wolf_ids atomic removal
+tracker.remove_wolves(3, wolfia)   # wolf_ids has two items removed but is not persisted. Can take multiple arguments or an array
+tracker.remove_wolves!([3, wolfia])  # wolf_ids has two items removed and is persisted. Can take multiple arguments or an array
+tracker.wolves                     # looks up wolf objects with ids wolf_ids
 ```
 
 The same is true for pack_names:
 
 ```ruby
-add_pack_name('Stark')
-add_pack_name!('Karstark')
-add_pack_names(['Greyjoy', 'Bolton'])
-remove_pack_name('Greyjoy')
-remove_pack_name!('Bolton')
-# does not define a finder method based on pack_names
+tracker.add_pack_name('Stark')
+tracker.add_pack_name!('Karstark')
+tracker.add_pack_names(['Greyjoy', 'Bolton'])
+tracker.remove_pack_name('Greyjoy')
+tracker.remove_pack_name!('Bolton')
+# Does not define a finder method based on pack_names.
+# If you define a custom array_serializer with config_array_serializer you can use this the same like:
+tracker.add_pack_names(wolf)
+tracker.remove_pack_name!(wolf)
 ```
 
 ## Dynamically created method rules
