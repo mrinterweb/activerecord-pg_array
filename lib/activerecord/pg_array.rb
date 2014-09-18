@@ -50,7 +50,7 @@ module ActiveRecord
           define_method :"add_#{friendly_attr_singular}!" do |obj|
             obj = obj_convert[obj]
             atr_will_change[self] # seems strange that calling this is needed
-            
+
             # There are two external issues that block atomic updates to one attribute.
             # 1. ActiveRecord update_attribute actually updates all attributes that are dirty! This surprised me.
             # 2. update_column doesn't work on pg arrays for rails < 4.0.4 (which is not yet released)
@@ -101,7 +101,7 @@ module ActiveRecord
             self.send :"remove_#{friendly_attr_plural}", *objs
             self.save!
           end
-          
+
           # define basic relational lookup methods
           # example:
           #   Given wolf_ids is the attribute
@@ -114,7 +114,10 @@ module ActiveRecord
 
                 # it might be better to define a scope instead
                 define_method friendly_attr_plural.to_sym do
-                  klass.where(id: [atr[self]])
+                  # passing an empty array to a SQL `IN` clause throws a PG::SyntaxError;
+                  # check to see if there are any items in the array and
+                  # send back any empty array if empty...
+                  self.send(attr_name).empty? ? [] : klass.where(id: [atr[self]])
                 end
               rescue NameError
               end

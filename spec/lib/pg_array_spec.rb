@@ -18,6 +18,7 @@ end
 
 describe WolfTracker do
   let(:wolf_tracker)  { WolfTracker.create(name: 'Wolfram') }
+  let(:empty_wolf_tracker)  { WolfTracker.create }
   let(:wolfy) { Wolf.create(name: 'Wolfy') }
   let(:son_of_wolfy) { Wolf.create(name: 'Son of Wolfy') }
   let(:wolfia) { Wolf.create(name: 'Wolfia') }
@@ -177,7 +178,7 @@ describe WolfTracker do
 
   describe "finder methods" do
     before do
-      wolf_tracker.add_wolves(wolfy, son_of_wolfy) 
+      wolf_tracker.add_wolves(wolfy, son_of_wolfy)
       wolf_tracker.save!
     end
 
@@ -186,6 +187,10 @@ describe WolfTracker do
 
     it "should have a wolves finder method and return a wolf" do
       expect(wolf_tracker.wolves).to eq [wolfy, son_of_wolfy]
+    end
+
+    it "should have a finder method and return an empty array if there aren't any wolves" do
+      expect(empty_wolf_tracker.wolves).to be_empty
     end
 
   end # scopes
